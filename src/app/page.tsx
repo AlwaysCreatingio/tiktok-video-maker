@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useRef } from 'react';
 import { DEFAULT_CONFIG, SAMPLE_IMAGES, type SlideshowConfig, type Slide } from '../lib/types';
+import { ExportModal } from '../components/ExportModal';
 
 type TextLayer = {
   id: string;
@@ -39,6 +40,7 @@ export default function Home() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [images, setImages] = useState<string[]>(SAMPLE_IMAGES);
   const [showSettings, setShowSettings] = useState(false);
+  const [showExportModal, setShowExportModal] = useState(false);
   const [slides, setSlides] = useState<SlideWithLayers[]>(() => {
     // Example slideshow on load
     const exampleTexts = [
@@ -495,6 +497,7 @@ export default function Home() {
 
           {/* Export Button */}
           <button
+            onClick={() => setShowExportModal(true)}
             disabled={slides.length === 0}
             className="absolute top-3 right-4 px-12 py-2 bg-[#fe2c55] text-white text-[15px] font-medium rounded-full hover:bg-[#e91e45] disabled:opacity-40 disabled:cursor-not-allowed transition z-10"
           >
@@ -973,6 +976,14 @@ export default function Home() {
             Delete
           </button>
         </div>
+      )}
+
+      {/* Export Modal */}
+      {showExportModal && (
+        <ExportModal
+          slides={slides}
+          onClose={() => setShowExportModal(false)}
+        />
       )}
     </div>
   );
